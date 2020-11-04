@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#SBATCH -N 1
+#SBATCH -p RM
+#SBATCH --ntasks-per-node 28
+#SBATCH -t 5:00:00
+#SBATCH -J LJ
+#SBATCH -o LJ%j.txt
+# The LAMMPS on Bridges was built with intel MPI. If your system environment was set to use
+# other MPI library, you need to uncomment the following line
+module load intel
+#
+module load LAMMPS/r14624 
+module swap cuda cuda/8.0
+module load jpeg/9b
+module load python3
+export LD_LIBRARY_PATH=/opt/packages/cuda/7.5/lib64:$LD_LIBRARY_PATH
+
+
+mpirun -n $SLURM_NTASKS lmp_bridges < system_all.in
+
+
